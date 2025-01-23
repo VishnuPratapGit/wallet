@@ -65,6 +65,9 @@ const userLogin = asyncHandler(async (req, res) => {
   const accessToken = generateAccessToken(responseUserData);
   const refreshToken = generateRefreshToken(user._id);
 
+  user.refreshToken = refreshToken;
+  await user.save({ validateBeforeSave: false });
+
   const options = {
     httpOnly: true,
     secure: true,
