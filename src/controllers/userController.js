@@ -1,6 +1,19 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/apiError.js";
 import { User } from "../models/user.model.js";
+import jwt from "jsonwebtoken";
+
+function generateAccessToken({ _id, name, email }) {
+  return jwt.sign({ _id, name, email }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+  });
+}
+
+function generateRefreshToken(id) {
+  return jwt.sign({ _id: id }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+  });
+}
 
 const userSingup = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -49,10 +62,24 @@ const userLogin = asyncHandler(async (req, res) => {
 
   const responseUserData = await User.findById(user._id).select("-password");
 
-  res.status(200).send({
-    message: "success",
-    responseUserData,
-  });
+  const accessToken = generateAccessToken(responseUserData);
+  const refreshToken = generateRefreshToken(user._id);
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .send({
+      message: "success",
+      responseUserData,
+      accessToken,
+      refreshToken,
+    });
 });
 
 const getAllUsers = asyncHandler(async (req, res) => {
