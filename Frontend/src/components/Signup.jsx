@@ -1,4 +1,5 @@
 import { useState } from "react";
+import authServices from "../auth";
 
 function Signup({ title }) {
   const [inputData, setInputData] = useState({
@@ -9,25 +10,7 @@ function Signup({ title }) {
 
   const submitForm = async (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch("/api/v1/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Form submitted successfully:", result);
-      } else {
-        console.error("Error submitting form:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Network error:", error);
-    }
+    authServices.signup();
   };
 
   const handleChange = (e) => {

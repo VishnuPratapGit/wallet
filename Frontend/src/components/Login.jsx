@@ -1,6 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/authSlice.js";
+import authServices from "../auth";
 
-function Login({ title, login }) {
+function Login({ title }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [inputData, setInputData] = useState({
     email: "",
     password: "",
@@ -8,25 +15,10 @@ function Login({ title, login }) {
 
   const submitForm = async (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch("/api/v1/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result);
-      } else {
-        console.error("Error submitting form:", response.statusText);
-      }
-    } catch (error) {
-      console.log("Network error", error);
-    }
+    authServices.login(inputData).then((data) => {
+      dispatch(login(data));
+      navigate("/");
+    });
   };
 
   const handleChange = (e) => {

@@ -1,0 +1,22 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+const AuthWrapper = ({ children, authenticate = true }) => {
+  const authStatus = useSelector((state) => state.auth.status);
+  const navigate = useNavigate();
+
+  console.log(authStatus);
+
+  useEffect(() => {
+    if (authenticate && !authStatus) {
+      navigate("/login");
+    } else if (!authenticate && authStatus) {
+      navigate("/");
+    }
+  }, [navigate, authStatus, authenticate]);
+
+  return <>{children}</>;
+};
+
+export default AuthWrapper;

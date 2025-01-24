@@ -1,16 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout as logoutAction } from "../redux/authSlice.js";
+import authServices from "../auth";
 
 const Logout = () => {
   let navigate = useNavigate();
+  let dispatch = useDispatch();
+
   const logoutHandler = () => {
-    fetch("api/v1/users/logout")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        navigate("/login");
-      })
-      .catch((err) => console.log("Error in Logout", err));
+    authServices.logout().then(() => {
+      dispatch(logoutAction());
+      navigate("/login");
+    });
   };
 
   return (
