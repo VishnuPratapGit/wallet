@@ -11,6 +11,9 @@ app.use(
     credentials: true,
   })
 );
+
+// app.options("*", cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -18,6 +21,6 @@ app.use(cookieParser());
 //ROUTES
 import userRoutes from "./routes/user.routes.js";
 
-app.use("/users", userRoutes);
+app.use("/api/v1/users", userRoutes);
 
 export { app };
