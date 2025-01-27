@@ -9,15 +9,30 @@ class AuthServices {
         body: JSON.stringify(inputData),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result);
-        return result;
-      } else {
-        console.error("Error submitting form:", response.statusText);
-      }
+      const result = await response.json();
+
+      console.log(result);
     } catch (error) {
       console.log("Request not sent: ", error);
+    }
+  }
+
+  async getCurrentUser() {
+    try {
+      const response = await fetch("/api/v1/users/getuser", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      const userData = await response.json();
+
+      if (!userData) {
+        console.log("User not found login first.");
+      }
+
+      return userData;
+    } catch (error) {
+      console.log("Failed to fetch user data", error);
     }
   }
 
@@ -31,13 +46,9 @@ class AuthServices {
         body: JSON.stringify(inputData),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Form submitted successfully:", result);
-        return result;
-      } else {
-        console.error("Error submitting form:", response.statusText);
-      }
+      const result = await response.json();
+
+      console.log(result);
     } catch (error) {
       console.error("Network error:", error);
     }
@@ -47,13 +58,9 @@ class AuthServices {
     try {
       const response = await fetch("/api/v1/users/all");
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log("User successfully fetched:", result);
-        return result;
-      } else {
-        console.error(response.statusText);
-      }
+      const result = await response.json();
+
+      console.log(result);
     } catch (error) {
       console.error("Network error:", error);
     }

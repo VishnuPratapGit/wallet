@@ -20,7 +20,7 @@ const Header = () => {
   ];
 
   return (
-    <div className="border border-dotted flex justify-between items-center px-3 py-2">
+    <div className="border border-neutral-600 rounded-lg flex justify-between items-center px-3 pl-5 py-2">
       <div>Logo</div>
       <div className="flex items-center gap-10">
         <ul className="flex gap-10 items-center">

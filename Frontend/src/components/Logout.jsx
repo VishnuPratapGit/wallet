@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout as logoutAction } from "../redux/authSlice.js";
-import authServices from "../auth";
+import authServices from "../services/auth.js";
 
 const Logout = () => {
   let navigate = useNavigate();

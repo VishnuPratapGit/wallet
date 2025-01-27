@@ -1,6 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/apiError.js";
 import { User } from "../models/user.model.js";
+import { Account } from "../models/account.model.js";
 import jwt from "jsonwebtoken";
 
 function generateAccessToken({ _id, name, email }) {
@@ -32,6 +33,13 @@ const userSingup = asyncHandler(async (req, res) => {
 
   const user = await User.create({ name, email, password });
 
+  const userId = user?.id;
+
+  await Account.create({
+    userId,
+    balance: (Math.random() * 1000 + 1).toFixed(2),
+  });
+
   const userResponce = await User.findById(user._id);
 
   if (!userResponce) {
@@ -60,7 +68,9 @@ const userLogin = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid Password");
   }
 
-  const responseUserData = await User.findById(user._id).select("-password");
+  const responseUserData = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
 
   const accessToken = generateAccessToken(responseUserData);
   const refreshToken = generateRefreshToken(user._id);
@@ -70,7 +80,7 @@ const userLogin = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: false,
   };
 
   res
@@ -79,7 +89,7 @@ const userLogin = asyncHandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, options)
     .send({
       message: "success",
-      responseUserData,
+      user: responseUserData,
       accessToken,
       refreshToken,
     });
@@ -104,7 +114,7 @@ const userLogout = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: false,
   };
 
   return res
@@ -114,4 +124,14 @@ const userLogout = asyncHandler(async (req, res) => {
     .json({ message: "User logged out successfully" });
 });
 
-export { userSingup, userLogin, getAllUsers, userLogout };
+const getCurrentUser = asyncHandler(async (req, res) => {
+  const user = req.user;
+
+  if (!user) {
+    throw new ApiError(404, "user not logged in!");
+  }
+
+  res.status(200).json(user);
+});
+
+export { userSingup, userLogin, getAllUsers, userLogout, getCurrentUser };
