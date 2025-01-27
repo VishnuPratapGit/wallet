@@ -23,7 +23,7 @@ function Signup({ title }) {
 
   return (
     <form
-      className="border border-dotted flex flex-col p-2 gap-1 w-max min-w-80"
+      className="border border-neutral-500 flex flex-col p-5 gap-3 w-max min-w-80"
       onSubmit={submitForm}
     >
       <div className="text-2xl text-center">{title}</div>

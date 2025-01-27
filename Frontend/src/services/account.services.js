@@ -1,6 +1,5 @@
 class AccountService {
   async transferAmount(details) {
-    console.log(details);
     try {
       const response = await fetch("/api/v1/account/transfer", {
         method: "POST",
@@ -12,7 +11,7 @@ class AccountService {
 
       const result = await response.json();
 
-      console.log(result);
+      if (!response.ok) console.log(result);
     } catch (error) {
       console.log("Somthing went wrong!", error);
     }

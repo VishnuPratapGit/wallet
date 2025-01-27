@@ -11,7 +11,7 @@ class AuthServices {
 
       const result = await response.json();
 
-      console.log(result);
+      if (!response.ok) console.log(result);
     } catch (error) {
       console.log("Request not sent: ", error);
     }
@@ -48,7 +48,7 @@ class AuthServices {
 
       const result = await response.json();
 
-      console.log(result);
+      if (!response.ok) console.log(result);
     } catch (error) {
       console.error("Network error:", error);
     }

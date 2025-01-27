@@ -5,14 +5,14 @@ import UserInformation from "../components/UserInformation.jsx";
 
 const Home = () => {
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-5 w-full h-full">
-      <section>
+    <div className="grid grid-rows-3 sm:grid-cols-2 sm:grid-rows-2 gap-5 w-full h-full">
+      <section className="overflow-hidden">
         <AccountSection />
       </section>
-      <section className="row-span-2">
+      <section className="row-span-2 overflow-hidden">
         <Transaction />
       </section>
-      <div>
+      <div className="overflow-hidden">
         <UserInformation />
       </div>
     </div>

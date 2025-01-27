@@ -13,12 +13,12 @@ const UserInformation = () => {
         <div className="flex items-center gap-3">
           <UserRound size={15} className="text-neutral-400" />
           <h2 className="text-neutral-400">Name:</h2>
-          <div> {user.name}</div>
+          <div>{user?.name}</div>
         </div>
         <div className="flex items-center gap-3">
           <IdCard size={15} className="text-neutral-400" />
           <h2 className="text-neutral-400">Email:</h2>
-          <div> {user.email}</div>
+          <div>{user?.email}</div>
         </div>
       </div>
     </div>

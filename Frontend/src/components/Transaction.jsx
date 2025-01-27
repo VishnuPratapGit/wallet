@@ -21,6 +21,9 @@ const Transaction = () => {
 
     alert("Transaction Successfull");
 
+    setEmail("");
+    setAmount("");
+
     accountService
       .getBalance()
       .then((data) => dispatch(updateBalance(data.balance)));
