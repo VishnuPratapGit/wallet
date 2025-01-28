@@ -32,6 +32,22 @@ class AccountService {
       console(error);
     }
   }
+
+  async getTransactionHistory() {
+    try {
+      const response = await fetch("/api/v1/account/transaction-history");
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return null;
+      } else {
+        return data;
+      }
+    } catch (error) {
+      console.log("Error in fetching transaction history.", error);
+    }
+  }
 }
 
 const accountService = new AccountService();

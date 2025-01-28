@@ -11,17 +11,21 @@ const App = () => {
 
   useEffect(() => {
     authServices.getCurrentUser().then((data) => {
-      dispatch(login(data));
+      if (data) {
+        dispatch(login(data));
+      } else {
+        dispatch(logout());
+      }
     });
   }, []);
 
   return (
-    <div className="flex flex-col h-full">
-      <div>
+    <div className="flex flex-col sm:px-20 h-full">
+      <div className="sticky top-6 backdrop-blur-lg w-full">
         <Header />
       </div>
 
-      <main className="mt-5 flex justify-center items-center grow">
+      <main className="mt-5 h-full flex justify-center items-center">
         <Outlet />
       </main>
     </div>

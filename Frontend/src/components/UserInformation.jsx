@@ -6,8 +6,10 @@ const UserInformation = () => {
   const user = useSelector((state) => state.auth.data);
 
   return (
-    <div className="p-10 h-full max-w-sm mx-auto border border-neutral-700 rounded-4xl">
-      <h2 className="text-lg font-medium font-mono leading-0">Information</h2>
+    <div className="p-10 h-full w-full mx-auto border border-neutral-800 rounded-4xl">
+      <h2 className="text-lg font-medium font-mono leading-0 text-orange-200">
+        Information
+      </h2>
 
       <div className="flex flex-col gap-3 mt-10 font-mono text-teal-600 text-sm">
         <div className="flex items-center gap-3">

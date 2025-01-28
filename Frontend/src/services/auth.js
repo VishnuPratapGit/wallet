@@ -11,7 +11,7 @@ class AuthServices {
 
       const result = await response.json();
 
-      if (!response.ok) console.log(result);
+      if (!response.ok) console.log(result.message);
     } catch (error) {
       console.log("Request not sent: ", error);
     }
@@ -26,13 +26,15 @@ class AuthServices {
 
       const userData = await response.json();
 
-      if (!userData) {
-        console.log("User not found login first.");
+      if (!response.ok) {
+        console.log(userData.message);
+        return null;
+      } else {
+        return userData;
       }
-
-      return userData;
     } catch (error) {
       console.log("Failed to fetch user data", error);
+      return null;
     }
   }
 

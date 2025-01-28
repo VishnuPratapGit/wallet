@@ -9,6 +9,7 @@ import SignupPage from "./pages/SignupPage.jsx";
 import Home from "./pages/Home.jsx";
 import AuthWrapper from "./components/authWrapper.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import TransactionHistory from "./pages/TransactionHistory.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
         element: (
           <AuthWrapper authenticate={false}>
             <SignupPage />
+          </AuthWrapper>
+        ),
+      },
+      {
+        path: "transaction-history",
+        element: (
+          <AuthWrapper>
+            <TransactionHistory />
           </AuthWrapper>
         ),
       },

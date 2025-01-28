@@ -5,7 +5,7 @@ const accountBalanceSlice = createSlice({
   initialState: 0,
   reducers: {
     updateBalance: (state, action) => {
-      return action.payload;
+      return action.payload ?? state;
     },
   },
 });

@@ -3,6 +3,27 @@ import { User } from "../models/user.model.js";
 import { Account } from "../models/account.model.js";
 import ApiError from "../utils/apiError.js";
 import mongoose from "mongoose";
+import Transaction from "../models/transaction.model.js";
+
+const saveTransaction = async (transactionDetails) => {
+  const { senderId, recieverId, amount } = transactionDetails;
+
+  if (!senderId || !recieverId || !amount) {
+    throw new ApiError(401, "Not found transaction details!");
+  }
+
+  const transaction = await Transaction.create({
+    senderId,
+    recieverId,
+    amount,
+  });
+
+  if (!transaction) {
+    throw new ApiError(404, "Transaction not saved!");
+  }
+
+  return transaction;
+};
 
 const getBalance = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
@@ -22,7 +43,7 @@ const getBalance = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Success", balance });
 });
 
-const transferBalance = asyncHandler(async (req, res) => {
+const transferBalance = asyncHandler(async (req, res, next) => {
   const { to, amount } = req.body;
   const from = req.user?._id;
 
@@ -84,12 +105,57 @@ const transferBalance = asyncHandler(async (req, res) => {
     }
   ).session(session);
 
+  const transaction = await saveTransaction({
+    senderId: from,
+    recieverId: receiver._id,
+    amount,
+  });
+
+  if (!transaction) {
+    await session.abortTransaction();
+    throw new ApiError(400, "Transaction not saved!");
+  }
+
   //commit transaction
   await session.commitTransaction();
 
   session.endSession();
 
-  res.status(200).send({ message: "Transaction Successfull." });
+  res.status(200).send({
+    message: "success",
+    "Transaction Details": {
+      transactionId: transaction._id,
+      sender: req.user.email,
+      receiver: receiver.email,
+      amount,
+      date: transaction.date,
+    },
+  });
 });
 
-export { getBalance, transferBalance };
+const getUserTransactions = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+  const skip = parseInt(req.query.skip) || 0;
+  const limit = parseInt(req.query.limit) || 10;
+
+  if (!userId) {
+    throw new ApiError(404, "User not logged in!");
+  }
+
+  const transaction = await Transaction.find({
+    $or: [{ senderId: userId }, { recieverId: userId }],
+  })
+    .sort({ date: -1 })
+    .skip(skip)
+    .limit(limit)
+    .populate("senderId", "name email -_id")
+    .populate("recieverId", "name email -_id");
+
+  if (!transaction) {
+    throw new ApiError(404, "Error in fetching transactions!");
+  }
+
+  res.status(200).send({ message: "success", transaction });
+});
+
+export { getBalance, transferBalance, getUserTransactions };

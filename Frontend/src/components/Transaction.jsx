@@ -30,7 +30,7 @@ const Transaction = () => {
   };
 
   return (
-    <div className="border border-neutral-700 rounded-4xl p-10 max-w-sm mx-auto h-full flex flex-col justify-between">
+    <div className="border border-neutral-800 rounded-4xl p-10 w-full mx-auto h-full flex flex-col justify-between">
       <h2 className="block text-lg text-orange-200 font-medium leading-0 font-mono">
         Transaction
       </h2>

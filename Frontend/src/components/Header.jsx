@@ -8,6 +8,11 @@ const Header = () => {
 
   const navLinks = [
     {
+      name: "🏠Home",
+      url: "/",
+      active: userStatus,
+    },
+    {
       name: "Login",
       url: "/login",
       active: !userStatus,
@@ -17,13 +22,20 @@ const Header = () => {
       url: "/signup",
       active: !userStatus,
     },
+    {
+      name: "💵History",
+      url: "/transaction-history",
+      active: userStatus,
+    },
   ];
 
   return (
     <div className="border border-neutral-600 rounded-lg flex justify-between items-center px-3 pl-5 py-2">
-      <div>Logo</div>
+      <div>
+        <img src="/vite.svg" alt="LOGO" />
+      </div>
       <div className="flex items-center gap-10">
-        <ul className="flex gap-10 items-center">
+        <ul className="flex gap-3 items-center">
           {navLinks.map((link) => (
             <li key={link.name}>
               {link.active && <Link to={link.url}>{link.name}</Link>}

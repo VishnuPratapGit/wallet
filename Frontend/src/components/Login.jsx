@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/authSlice.js";
+import { login, logout } from "../redux/authSlice.js";
 import authServices from "../services/auth.js";
 
 function Login({ title }) {
@@ -15,9 +15,15 @@ function Login({ title }) {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    authServices.login(inputData).then((data) => {
-      dispatch(login(data));
-      navigate("/");
+    await authServices.login(inputData);
+    authServices.getCurrentUser().then((data) => {
+      if (data) {
+        dispatch(login(data));
+        navigate("/");
+      } else {
+        dispatch(logout());
+        navigate("/login");
+      }
     });
   };
 
