@@ -11,9 +11,15 @@ class AccountService {
 
       const result = await response.json();
 
-      if (!response.ok) console.log(result);
+      if (!response.ok) {
+        console.log(result);
+        return false;
+      } else {
+        return true;
+      }
     } catch (error) {
       console.log("Somthing went wrong!", error);
+      return false;
     }
   }
 
@@ -33,9 +39,13 @@ class AccountService {
     }
   }
 
-  async getTransactionHistory() {
+  async getTransactionHistory(skipedDocuments, limit) {
     try {
-      const response = await fetch("/api/v1/account/transaction-history");
+      const skip = skipedDocuments || 0;
+
+      const response = await fetch(
+        `/api/v1/account/transaction-history?skip=${skip}&limit=${limit}`
+      );
 
       const data = await response.json();
 

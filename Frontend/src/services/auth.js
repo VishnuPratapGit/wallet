@@ -50,9 +50,15 @@ class AuthServices {
 
       const result = await response.json();
 
-      if (!response.ok) console.log(result);
+      if (!response.ok) {
+        console.log(result.message);
+        return false;
+      } else {
+        return true;
+      }
     } catch (error) {
       console.error("Network error:", error);
+      return false;
     }
   }
 

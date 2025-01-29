@@ -17,12 +17,13 @@ const Transaction = () => {
       amount: Number(amount),
     };
 
-    await accountService.transferAmount(details);
+    const ok = await accountService.transferAmount(details);
 
-    alert("Transaction Successfull");
-
-    setEmail("");
-    setAmount("");
+    if (ok) {
+      alert("Transaction Successfull");
+      setEmail("");
+      setAmount("");
+    } else alert("Transaction Failed");
 
     accountService
       .getBalance()

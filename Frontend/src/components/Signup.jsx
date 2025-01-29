@@ -10,7 +10,16 @@ function Signup({ title }) {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    authServices.signup(inputData);
+    authServices.signup(inputData).then((ok) => {
+      if (ok) {
+        alert("Registration Successfull");
+        setInputData({
+          name: "",
+          email: "",
+          password: "",
+        });
+      }
+    });
   };
 
   const handleChange = (e) => {

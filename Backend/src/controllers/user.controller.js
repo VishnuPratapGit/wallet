@@ -37,7 +37,7 @@ const userSingup = asyncHandler(async (req, res) => {
 
   await Account.create({
     userId,
-    balance: (Math.random() * 1000 + 1).toFixed(2),
+    balance: 0,
   });
 
   const userResponce = await User.findById(user._id);

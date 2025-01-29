@@ -9,9 +9,9 @@ const History = memo(() => {
 
   return (
     <div className="w-full flex flex-col gap-3">
-      {historyData.map((t) => (
+      {historyData.map((t, index) => (
         <div
-          key={t._id}
+          key={index}
           className="border py-4 px-8 w-full rounded-4xl border-neutral-800 font-medium"
         >
           {t.senderId.email === user?.email ? (
