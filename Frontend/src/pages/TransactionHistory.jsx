@@ -6,39 +6,49 @@ import { setTransactionHistory } from "../redux/historySlice.js";
 
 const TransactionHistory = memo(() => {
   const [page, setPage] = useState(0);
+  const [flag, setFlag] = useState(true);
   const dispatch = useDispatch();
-  const historyData = useSelector((state) => state.history.data); //array
-  console.log("historyData fron Transaction History: ", historyData);
+  const dataLength = useSelector((state) => state.history.data).length; //array
+
   const limit = 5;
   const skip = page * limit;
 
+  function settingFlag() {
+    if (dataLength > limit && skip === 0) {
+      setFlag(false);
+    }
+  }
+
   useEffect(() => {
-    accountService.getTransactionHistory(skip, limit).then((data) => {
-      dispatch(setTransactionHistory(data.transaction));
-    });
+    if (dataLength === skip && flag === true) {
+      accountService.getTransactionHistory(skip, limit).then((data) => {
+        if (data.transaction.length === 0) {
+          alert("no more transactions");
+          setFlag(false);
+          return;
+        } else {
+          dispatch(setTransactionHistory(data.transaction));
+        }
+      });
+    }
+    settingFlag();
   }, [page]);
 
   return (
     <div className="w-full">
       <History />
-      <div className="flex sticky bottom-1 backdrop-blur-lg mt-6 gap-2">
+      <div className="mt-5">
         <button
-          onClick={() => {
-            if (skip <= 0) return;
-            setPage(page - 1);
-          }}
           className="w-full"
-        >
-          Prev
-        </button>
-        <button
           onClick={() => {
-            if (limit > historyData.length) return;
+            if (skip > dataLength || flag === false) {
+              alert("no more transactions");
+              return;
+            }
             setPage(page + 1);
           }}
-          className="w-full"
         >
-          Next
+          More
         </button>
       </div>
     </div>

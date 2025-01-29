@@ -11,7 +11,7 @@ export const historySlice = createSlice({
   reducers: {
     setTransactionHistory: (state, action) => {
       state.status = true;
-      state.data = action.payload;
+      state.data = [...state.data, ...action.payload];
     },
   },
 });
