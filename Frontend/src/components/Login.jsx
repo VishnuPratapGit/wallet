@@ -22,6 +22,7 @@ function Login({ title }) {
         navigate("/");
       } else {
         dispatch(logout());
+        alert("user not found!");
         navigate("/login");
       }
     });
