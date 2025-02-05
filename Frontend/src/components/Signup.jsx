@@ -36,7 +36,7 @@ function Signup({ title }) {
       onSubmit={submitForm}
     >
       <div className="text-2xl text-center">{title}</div>
-      <h2 className="self-center">Loading...</h2>
+      {loading && <h2 className="self-center">Loading...</h2>}
       <input
         name="name"
         onChange={handleChange}

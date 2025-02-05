@@ -29,7 +29,7 @@ function Login({ title }) {
           navigate("/");
         } else {
           dispatch(logout());
-          alert("user not found!");
+          alert("Getting user details failed!");
           navigate("/login");
         }
       })
