@@ -10,6 +10,7 @@ class AccountService {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(details),
       });
 
@@ -29,7 +30,10 @@ class AccountService {
 
   async getBalance() {
     try {
-      const response = await fetch(`${this.BASE_URL}/api/v1/account/balance`);
+      const response = await fetch(`${this.BASE_URL}/api/v1/account/balance`, {
+        method: "GET",
+        credentials: "include",
+      });
 
       const result = await response.json();
 
@@ -48,7 +52,11 @@ class AccountService {
       const skip = skipedDocuments || 0;
 
       const response = await fetch(
-        `${this.BASE_URL}/api/v1/account/transaction-history?skip=${skip}&limit=${limit}`
+        `${this.BASE_URL}/api/v1/account/transaction-history?skip=${skip}&limit=${limit}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
       );
 
       const data = await response.json();

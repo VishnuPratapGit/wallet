@@ -74,7 +74,10 @@ class AuthServices {
 
   async fetchAllUsers() {
     try {
-      const response = await fetch(`${this.BASE_URL}/api/v1/users/all`);
+      const response = await fetch(`${this.BASE_URL}/api/v1/users/all`, {
+        method: "GET",
+        credentials: "include",
+      });
 
       const result = await response.json();
 
@@ -85,7 +88,10 @@ class AuthServices {
   }
 
   async logout() {
-    fetch(`${this.BASE_URL}/api/v1/users/logout`)
+    fetch(`${this.BASE_URL}/api/v1/users/logout`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
