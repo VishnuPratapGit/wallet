@@ -10,6 +10,7 @@ class AuthServices {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(inputData),
       });
 
