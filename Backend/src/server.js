@@ -4,7 +4,7 @@ import connectDB from "./database/index.js";
 
 dotenv.config();
 
-let port = process.env.PORT;
+let port = process.env.PORT || 3000;
 
 connectDB()
   .then(() => {
