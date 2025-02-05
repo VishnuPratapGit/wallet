@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 
 import SignupPage from "./pages/SignupPage.jsx";
 import Home from "./pages/Home.jsx";
-import AuthWrapper from "./components/authWrapper.jsx";
+import AuthWrapper from "./components/AuthWrapper.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import TransactionHistory from "./pages/TransactionHistory.jsx";
 
