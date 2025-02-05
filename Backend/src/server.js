@@ -9,7 +9,7 @@ let port = process.env.PORT;
 connectDB()
   .then(() => {
     app.listen(port, () => {
-      console.log(`server listens on http://localhost:${port}`);
+      console.log(`server started successfully.`);
     });
 
     app.on("error", (err) => {
