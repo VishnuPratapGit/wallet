@@ -1,7 +1,11 @@
 class AccountService {
+  constructor() {
+    this.BASE_URL = import.meta.env.VITE_API_URL;
+  }
+
   async transferAmount(details) {
     try {
-      const response = await fetch("/api/v1/account/transfer", {
+      const response = await fetch(`${this.BASE_URL}/api/v1/account/transfer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -18,24 +22,24 @@ class AccountService {
         return true;
       }
     } catch (error) {
-      console.log("Somthing went wrong!", error);
+      console.log("Something went wrong!", error);
       return false;
     }
   }
 
   async getBalance() {
     try {
-      const response = await fetch("/api/v1/account/balance");
+      const response = await fetch(`${this.BASE_URL}/api/v1/account/balance`);
 
       const result = await response.json();
 
       if (!result) {
-        console.log("Problem in fetching balace.");
+        console.log("Problem in fetching balance.");
       }
 
       return result;
     } catch (error) {
-      console(error);
+      console.error(error);
     }
   }
 
@@ -44,7 +48,7 @@ class AccountService {
       const skip = skipedDocuments || 0;
 
       const response = await fetch(
-        `/api/v1/account/transaction-history?skip=${skip}&limit=${limit}`
+        `${this.BASE_URL}/api/v1/account/transaction-history?skip=${skip}&limit=${limit}`
       );
 
       const data = await response.json();

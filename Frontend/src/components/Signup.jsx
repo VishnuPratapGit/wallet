@@ -1,7 +1,10 @@
 import { useState } from "react";
 import authServices from "../services/auth.js";
+import { useNavigate } from "react-router-dom";
 
 function Signup({ title }) {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [inputData, setInputData] = useState({
     name: "",
     email: "",
@@ -10,16 +13,13 @@ function Signup({ title }) {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    authServices.signup(inputData).then((ok) => {
-      if (ok) {
-        alert("Registration Successfull");
-        setInputData({
-          name: "",
-          email: "",
-          password: "",
-        });
-      }
-    });
+    setLoading(true);
+
+    const userSignedup = await authServices.signup(inputData);
+    if (!userSignedup) alert("User registration failed!");
+
+    setLoading(false);
+    navigate("/login");
   };
 
   const handleChange = (e) => {
@@ -36,6 +36,7 @@ function Signup({ title }) {
       onSubmit={submitForm}
     >
       <div className="text-2xl text-center">{title}</div>
+      <h2 className="self-center">Loading...</h2>
       <input
         name="name"
         onChange={handleChange}

@@ -1,7 +1,11 @@
 class AuthServices {
+  constructor() {
+    this.BASE_URL = import.meta.env.VITE_API_URL;
+  }
+
   async login(inputData) {
     try {
-      const response = await fetch("/api/v1/users/login", {
+      const response = await fetch(`${this.BASE_URL}/api/v1/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -11,7 +15,12 @@ class AuthServices {
 
       const result = await response.json();
 
-      if (!response.ok) console.log(result.message);
+      if (!response.ok) {
+        console.log(result.message);
+        return false;
+      } else {
+        return true;
+      }
     } catch (error) {
       console.log("Request not sent: ", error);
     }
@@ -19,7 +28,7 @@ class AuthServices {
 
   async getCurrentUser() {
     try {
-      const response = await fetch("/api/v1/users/getuser", {
+      const response = await fetch(`${this.BASE_URL}/api/v1/users/getuser`, {
         method: "GET",
         credentials: "include",
       });
@@ -40,7 +49,7 @@ class AuthServices {
 
   async signup(inputData) {
     try {
-      const response = await fetch("/api/v1/users/signup", {
+      const response = await fetch(`${this.BASE_URL}/api/v1/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +73,7 @@ class AuthServices {
 
   async fetchAllUsers() {
     try {
-      const response = await fetch("/api/v1/users/all");
+      const response = await fetch(`${this.BASE_URL}/api/v1/users/all`);
 
       const result = await response.json();
 
@@ -75,7 +84,7 @@ class AuthServices {
   }
 
   async logout() {
-    fetch("api/v1/users/logout")
+    fetch(`${this.BASE_URL}/api/v1/users/logout`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

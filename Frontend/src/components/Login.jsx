@@ -5,6 +5,7 @@ import { login, logout } from "../redux/authSlice.js";
 import authServices from "../services/auth.js";
 
 function Login({ title }) {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -15,17 +16,24 @@ function Login({ title }) {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    await authServices.login(inputData);
-    authServices.getCurrentUser().then((data) => {
-      if (data) {
-        dispatch(login(data));
-        navigate("/");
-      } else {
-        dispatch(logout());
-        alert("user not found!");
-        navigate("/login");
-      }
-    });
+    setLoading(true);
+
+    const logged = await authServices.login(inputData);
+    if (!logged) alert("User Login Failed");
+
+    authServices
+      .getCurrentUser()
+      .then((data) => {
+        if (data) {
+          dispatch(login(data));
+          navigate("/");
+        } else {
+          dispatch(logout());
+          alert("user not found!");
+          navigate("/login");
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   const handleChange = (e) => {
@@ -42,6 +50,7 @@ function Login({ title }) {
       onSubmit={submitForm}
     >
       <div className="text-2xl text-center">{title}</div>
+      {loading && <h2 className="self-center">Loading...</h2>}
       <input
         name="email"
         onChange={handleChange}

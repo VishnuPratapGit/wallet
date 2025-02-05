@@ -1,22 +1,27 @@
-import "./App.css";
+import { useEffect, useState } from "react";
+import { login, logout } from "./redux/authSlice.js";
+import { useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
-import { useDispatch } from "react-redux";
-import { login, logout } from "./redux/authSlice.js";
 import authServices from "./services/auth.js";
-import { useEffect } from "react";
+import "./App.css";
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    authServices.getCurrentUser().then((data) => {
-      if (data) {
-        dispatch(login(data));
-      } else {
-        dispatch(logout());
-      }
-    });
+    authServices
+      .getCurrentUser()
+      .then((data) => {
+        if (data) {
+          dispatch(login(data));
+        } else {
+          dispatch(logout());
+          alert("user not login");
+        }
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -26,7 +31,7 @@ const App = () => {
       </div>
 
       <main className="mt-5 h-full flex justify-center items-center">
-        <Outlet />
+        {loading ? <h1>Loading...</h1> : <Outlet />}
       </main>
     </div>
   );
