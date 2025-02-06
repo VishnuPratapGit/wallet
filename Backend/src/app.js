@@ -28,7 +28,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/account", accountRouter);
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  res.sendFile("client/build/index.html", { root: process.cwd() });
 });
 
 export { app };
