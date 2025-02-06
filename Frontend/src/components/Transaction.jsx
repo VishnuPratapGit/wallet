@@ -5,12 +5,14 @@ import { useDispatch } from "react-redux";
 import { updateBalance } from "../redux/accountBalanceSlice.js";
 
 const Transaction = () => {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState("");
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const details = {
       to: email,
@@ -25,6 +27,8 @@ const Transaction = () => {
       setAmount("");
     } else alert("Transaction Failed");
 
+    setLoading(false);
+
     accountService
       .getBalance()
       .then((data) => dispatch(updateBalance(data.balance)));
@@ -35,6 +39,7 @@ const Transaction = () => {
       <h2 className="block text-lg text-orange-200 font-medium leading-0 font-mono">
         Transaction
       </h2>
+      {loading && <h2 className="self-center">Loading...</h2>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-sm">
