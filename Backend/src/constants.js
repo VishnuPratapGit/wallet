@@ -1,1 +1,1 @@
-export const DB_NAME = "Paytm";
+export const DB_NAME = "Wallet";
