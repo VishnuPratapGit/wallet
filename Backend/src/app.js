@@ -15,7 +15,7 @@ app.use(
 
 // app.options("*", cors());
 
-app.use(express.static("client/build"));
+app.use(express.static("../frontend/build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -28,7 +28,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/account", accountRouter);
 
 app.get("*", (req, res) => {
-  res.sendFile("client/build/index.html", { root: process.cwd() });
+  res.sendFile("index.html", { root: "../frontend/build" });
 });
 
 export { app };
